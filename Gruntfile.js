@@ -540,14 +540,16 @@ module.exports = function ( grunt ) {
     connect:{
           server: {
               options: {
-                  base: './build',
-                  port: '8000',
-                  hostname: 'localhost',
+                  base: '<%= server.base %>',
+                  port: '<%= server.port %>',
+                  hostname: '<%= server.hostname %>',
+                  index: '<%= server.index %>',
                   open: true,
                   middleware: function(connect, options, middlewares) {
                       middlewares.push(function(req, res, next){
                           var fs = require('fs');
-                          fs.readFile('./build/index.html', function (err, data) {
+                          var indexPath = options.base+'/'+options.index;
+                          fs.readFile(indexPath, function (err, data) {
                               if (err){
                                   throw err;
                               }

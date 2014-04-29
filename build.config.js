@@ -9,7 +9,15 @@ module.exports = {
    */
   build_dir: 'build',
   compile_dir: 'bin',
-
+  /**
+  *  This is the basic configuration of the server to run the tests
+  */
+  server: {
+      hostname: 'localhost',
+      port: '8000',
+      base: './build',
+      index: 'index.html'
+  },
   /**
    * This is a collection of file patterns that refer to our app code (the
    * stuff in `src/`). These file paths are used in the configuration of
