@@ -18,6 +18,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-ngmin');
   grunt.loadNpmTasks('grunt-html2js');
+  grunt.loadNpmTasks('grunt-contrib-connect');
 
   /**
    * Load in our build configuration file.
@@ -528,7 +529,36 @@ module.exports = function ( grunt ) {
           livereload: false
         }
       }
-    }
+    },
+    /**
+    * Grunt 'connect'is added to enable you to run code as if its running on a remote server
+    * its easier and faster than configuring a whole HTTP server for this
+    * its more browser friendly rather than opening files in the browser
+    *
+    * For more configuration details visit: https://github.com/gruntjs/grunt-contrib-connect
+    */
+    connect:{
+          server: {
+              options: {
+                  base: './build',
+                  port: '8000',
+                  hostname: 'localhost',
+                  open: true,
+                  middleware: function(connect, options, middlewares) {
+                      middlewares.push(function(req, res, next){
+                          var fs = require('fs');
+                          fs.readFile('./build/index.html', function (err, data) {
+                              if (err){
+                                  throw err;
+                              }
+                              res.end(data);
+                          });
+                      });
+                      return middlewares;
+                  }
+              }
+          }
+      }
   };
 
   grunt.initConfig( grunt.util._.extend( taskConfig, userConfig ) );
@@ -557,7 +587,10 @@ module.exports = function ( grunt ) {
     'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'karmaconfig',
     'karma:continuous' 
   ]);
-
+  /**
+  * Runs the project on a minion localhost server
+  */
+    grunt.registerTask('run',['build','compile','connect:server','watch']);
   /**
    * The `compile` task gets your app ready for deployment by concatenating and
    * minifying your code.

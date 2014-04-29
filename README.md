@@ -210,6 +210,14 @@ and concatenated, but when a test/spec file changes, only the tests are run.
 This allows the watch command to complete in a fraction of the time it would
 ordinarily take.
 
+or you can start a small connect webserver to test your code
+```sh
+$ grunt run
+```
+`run` is actually an alias of the [grunt-contrib-connect](For more configuration details visit: https://github.com/gruntjs/grunt-contrib-connect) that will emulate an
+HTTP server. The server only runs as long as grunt is running. Once grunt's tasks
+have completed, the web server stops.
+
 In addition, if you're running a Live Reload plugin in your browser (see below),
 you won't even have to refresh to see the changes! When the `watch` task detects
 a file change, it will reload the page for you. Sweet.
